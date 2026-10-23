@@ -1,82 +1,76 @@
-COVID Tracker 🦠📊
-Overview
+# COVID-19 Data Tracker
 
-This project is a COVID-19 Tracker built using Python. It allows you to collect, analyze, and visualize COVID-19 case data in an interactive and insightful way. The notebook provides tools to explore pandemic trends, generate plots, and monitor confirmed cases, recoveries, and deaths across different regions.
+A Jupyter notebook that compares the course of COVID-19 in Kenya, the
+United States and India: cases, deaths, death rates and vaccinations, using
+the Our World in Data (OWID) dataset.
 
-Features
+![Daily new cases, 7-day average, for Kenya, the United States and India](images/new_cases_7day.png)
 
-📥 Fetches up-to-date COVID-19 data
+## What it found
 
-📊 Data cleaning and preprocessing
+From the OWID data, which runs to mid-2024:
 
-🌍 Country- and region-level statistics
+| Country | Total cases | Total deaths | Deaths per case |
+|---|---|---|---|
+| United States | 103.4 million | 1,193,165 | 1.15% |
+| India | 45.0 million | 533,623 | 1.18% |
+| Kenya | 344,106 | 5,689 | 1.65% |
 
-📈 Interactive visualizations of cases, recoveries, and deaths
+- **The waves differ by country.** India's worst wave peaked in May 2021
+  (the Delta wave); the United States peaked in January 2022 (Omicron).
+- **Kenya's numbers are far lower,** partly because its population is much
+  smaller and likely also because it tested less. Deaths per case is higher
+  there, but with less testing fewer mild cases get counted, which pushes
+  that ratio up.
+- **India reported 67% of its population fully vaccinated** at the last
+  date with data.
 
-🔍 Easy exploration of trends over time
+![Total cases over time](images/total_cases.png)
 
-Technologies Used
+## What the notebook does
 
-Python 3.8+
+`covid_tracker.ipynb`:
 
-Jupyter Notebook
+1. **Loads** the OWID file and checks columns and missing values.
+2. **Cleans** it: keeps the three countries, drops rows without dates,
+   cases or deaths, and converts dates.
+3. **Explores** it: total cases and deaths over time, a 7-day moving
+   average of new cases, deaths per case at the latest date, and a bar
+   chart of total cases.
+4. **Vaccinations:** total doses over time and the share of each
+   population fully vaccinated.
+5. **World maps** (Plotly) of total cases and vaccination rate for every
+   country.
+6. **Summary numbers:** highest totals and the peak week for new cases.
 
-Pandas – Data manipulation
+## How to run it
 
-Matplotlib / Seaborn – Data visualization
+The data file is too large for this repo, so download it first:
 
-Requests / APIs – Fetching real-time COVID data (if included in your code)
+1. Get `owid-covid-data.csv` from the
+   [OWID COVID-19 data repository](https://github.com/owid/covid-19-data/tree/master/public/data)
+   and put it next to the notebook.
+2. Install the packages and open the notebook:
 
-Installation
-
-Clone this repository:
-
-git clone https://github.com/your-username/covid-tracker.git
-cd covid-tracker
-
-
-Create a virtual environment (recommended):
-
-python -m venv venv
-source venv/bin/activate   # On Mac/Linux
-venv\Scripts\activate      # On Windows
-
-
-Install required dependencies:
-
+```bash
 pip install -r requirements.txt
+jupyter notebook covid_tracker.ipynb
+```
 
-Usage
+## Known issues
 
-Launch Jupyter Notebook:
+- **Missing vaccination counts are filled with 0.** On days with no report
+  the cumulative total drops to zero and comes back, so the vaccination
+  line chart has false dips. The "latest date" vaccination bar also shows
+  0% for Kenya and the United States, because neither reported on that
+  date. Carrying the last reported value forward for each country would
+  fix both.
+- **This version of the OWID file reports new cases once a week,** so the
+  "peak new cases" figures in the notebook are weekly totals, not single
+  days. The 7-day average turns them back into a daily rate.
+- Each step reloads the CSV, and pandas warns about setting values on a
+  slice. Neither changes the results.
 
-jupyter notebook
+## Author
 
-
-Open covid_tracker.ipynb
-
-Run cells step by step to explore COVID-19 datasets and generate visualizations.
-
-Example Output
-
-Line charts showing case trends over time
-
-Bar plots for country-level comparisons
-
-Summary statistics (totals, daily changes, growth rates)
-
-Project Structure
-.
-├── covid_tracker.ipynb   # Main notebook
-├── requirements.txt      # Dependencies
-└── README.md             # Project documentation
-
-Data Sources
-
-Johns Hopkins CSSE COVID-19 Dataset
-
-Other APIs or CSVs (specify if used)
-
-License
-
-This project is licensed under the MIT License.
+Tiiso Letsapa, Letsapamyron07@gmail.com
